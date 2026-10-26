@@ -1,7 +1,23 @@
 {
-  "status": "running",
+  "status": "success",
   "run_id": "40349687487",
   "run_url": "https://github.com/newgitjfo/barreplay-yearly-tick-merger/actions/runs/40349687487",
   "commit": "1d53f01ef88933019cde1334bbbc93b52a0236f8",
-  "finished_utc": "2026-10-26T15:29:57.805641+00:00"
+  "finished_utc": "2026-10-26T15:32:50.892898+00:00",
+  "test_log_tail": "[2/2] 2026-01-02 checked and merged (1 ticks)\nSUCCESS: EURUSD_2026.zip | 3 ticks | 166 ZIP bytes\nok\ntest_exact_format_same_timestamp (test_merge_year.Tests.test_exact_format_same_timestamp) ... ok\ntest_identical_block_skipped_only_as_whole (test_merge_year.Tests.test_identical_block_skipped_only_as_whole) ... ok\ntest_merge_hour_and_day (test_merge_year.Tests.test_merge_hour_and_day) ... ok\ntest_no_overwrite (test_merge_year.Tests.test_no_overwrite) ... ok\ntest_nonfinite_price (test_merge_year.Tests.test_nonfinite_price) ... ok\ntest_normalize_conflicting_overlap_rejected (test_merge_year.Tests.test_normalize_conflicting_overlap_rejected) ... ok\ntest_normalize_identical_whole_blocks_only (test_merge_year.Tests.test_normalize_identical_whole_blocks_only) ... ok\ntest_normalize_split_hour_joins_without_dedup_ticks (test_merge_year.Tests.test_normalize_split_hour_joins_without_dedup_ticks) ... ok\ntest_normalize_whole_day_to_hourly (test_merge_year.Tests.test_normalize_whole_day_to_hourly) ... ok\ntest_reversed_hours_fail (test_merge_year.Tests.test_reversed_hours_fail) ... ok\ntest_unsorted_ticks (test_merge_year.Tests.test_unsorted_ticks) ... ok\ntest_wrong_daily_name (test_merge_year.Tests.test_wrong_daily_name) ... ok\n\n----------------------------------------------------------------------\nRan 18 tests in 0.020s\n\nOK",
+  "merge_log_tail": "[192/210] 2026-09-29 checked and merged (109,174 ticks)\n[193/210] 2026-09-30 checked and merged (109,660 ticks)\n[194/210] 2026-10-01 checked and merged (108,367 ticks)\n[195/210] 2026-10-02 checked and merged (123,912 ticks)\n[196/210] 2026-10-05 checked and merged (98,830 ticks)\n[197/210] 2026-10-06 checked and merged (87,376 ticks)\n[198/210] 2026-10-07 checked and merged (83,800 ticks)\n[199/210] 2026-10-08 checked and merged (102,786 ticks)\n[200/210] 2026-10-09 checked and merged (85,500 ticks)\n[201/210] 2026-10-12 checked and merged (90,542 ticks)\n[202/210] 2026-10-13 checked and merged (81,849 ticks)\n[203/210] 2026-10-14 checked and merged (83,901 ticks)\n[204/210] 2026-10-15 checked and merged (93,721 ticks)\n[205/210] 2026-10-16 checked and merged (107,349 ticks)\n[206/210] 2026-10-19 checked and merged (82,409 ticks)\n[207/210] 2026-10-20 checked and merged (133,587 ticks)\n[208/210] 2026-10-21 checked and merged (83,133 ticks)\n[209/210] 2026-10-22 checked and merged (101,154 ticks)\n[210/210] 2026-10-23 checked and merged (95,741 ticks)\nSUCCESS: BRENTCMDUSD_2026.zip | 16,224,433 ticks | 82,000,490 ZIP bytes",
+  "publish_log_tail": "Published verified ZIP: https://github.com/newgitjfo/barreplay-yearly-tick-merger/releases/tag/yearly-brentcmdusd-2026",
+  "symbol": "BRENTCMDUSD",
+  "year": 2026,
+  "daily_files": 210,
+  "ticks": 16224433,
+  "hourly_blocks": 4398,
+  "first_tick_utc": "2026-01-02T01:00:00.717Z",
+  "last_tick_utc": "2026-10-23T20:59:59.797Z",
+  "bin_bytes": 389403984,
+  "zip_bytes": 82000490,
+  "bin_sha256": "99c6717ba97af4faf787ada85cf6d5072b756181679948fc736c32e58fc5722c",
+  "zip_sha256": "2442f80d8a7fa96007aca4b5fea66f73b32f2a4600956a6cfda34e9497c2997f",
+  "source_revision": "a76a1ce8413f5f6777f5b37f51720b88f86e7627",
+  "zip_file": "BRENTCMDUSD_2026.zip"
 }

@@ -1,0 +1,26 @@
+test_bad_counts_empty_truncated (test_merge_year.Tests.test_bad_counts_empty_truncated) ... ok
+test_bad_epoch (test_merge_year.Tests.test_bad_epoch) ... ok
+test_build_failure_leaves_no_output (test_merge_year.Tests.test_build_failure_leaves_no_output) ... Snapshot: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Sources: 1 daily files; 28 bytes
+ok
+test_conflicting_hour_fails (test_merge_year.Tests.test_conflicting_hour_fails) ... ok
+test_cross_hour_rejected (test_merge_year.Tests.test_cross_hour_rejected) ... ok
+test_end_to_end_build_mock_download (test_merge_year.Tests.test_end_to_end_build_mock_download) ... Snapshot: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Sources: 2 daily files; 80 bytes
+[1/2] 2026-01-01 checked and merged (2 ticks)
+[2/2] 2026-01-02 checked and merged (1 ticks)
+SUCCESS: EURUSD_2026.zip | 3 ticks | 166 ZIP bytes
+ok
+test_exact_format_same_timestamp (test_merge_year.Tests.test_exact_format_same_timestamp) ... ok
+test_identical_block_skipped_only_as_whole (test_merge_year.Tests.test_identical_block_skipped_only_as_whole) ... ok
+test_merge_hour_and_day (test_merge_year.Tests.test_merge_hour_and_day) ... ok
+test_no_overwrite (test_merge_year.Tests.test_no_overwrite) ... ok
+test_nonfinite_price (test_merge_year.Tests.test_nonfinite_price) ... ok
+test_reversed_hours_fail (test_merge_year.Tests.test_reversed_hours_fail) ... ok
+test_unsorted_ticks (test_merge_year.Tests.test_unsorted_ticks) ... ok
+test_wrong_daily_name (test_merge_year.Tests.test_wrong_daily_name) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.010s
+
+OK

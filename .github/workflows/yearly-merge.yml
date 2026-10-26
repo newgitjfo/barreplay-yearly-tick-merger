@@ -1,0 +1,62 @@
+name: Merge yearly tick data and publish Release
+run-name: Merge ${{ inputs.symbol || 'EURUSD' }} ${{ inputs.year || '2026' }} daily BIN files
+on:
+  # Initial project upload starts EURUSD 2026 automatically.
+  # Later edits to this workflow also start the default EURUSD 2026 run.
+  push:
+    branches: [main]
+    paths: ['.github/workflows/yearly-merge.yml']
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: 'Symbol folder in Esmaeil9ss/Tickdata (e.g. EURUSD)'
+        required: true
+        default: EURUSD
+        type: string
+      year:
+        description: 'Calendar year (available daily files only)'
+        required: true
+        default: '2026'
+        type: string
+      release_tag:
+        description: 'Destination release tag; use a new tag to retain older snapshots'
+        required: true
+        default: yearly-eurusd-2026
+        type: string
+      overwrite:
+        description: 'Replace existing same-symbol/year assets in the destination release?'
+        default: false
+        type: boolean
+permissions:
+  contents: write
+concurrency:
+  group: yearly-tick-merger-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Test merge logic
+        run: python3 -m unittest discover -s tests -v
+      - name: Download daily files, validate, merge and ZIP
+        env:
+          SYMBOL: ${{ inputs.symbol || 'EURUSD' }}
+          YEAR: ${{ inputs.year || '2026' }}
+        run: python3 scripts/merge_year.py --symbol "$SYMBOL" --year "$YEAR" --output output
+      - name: Upload verified yearly ZIP to Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || 'yearly-eurusd-2026' }}
+          OVERWRITE: ${{ inputs.overwrite || 'false' }}
+        run: python3 scripts/publish.py
+      - name: Record run result in repository
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: python3 scripts/record_status.py

@@ -1,7 +1,7 @@
 {
-  "status": "failure",
-  "run_id": "40321641885",
-  "run_url": "https://github.com/newgitjfo/barreplay-yearly-tick-merger/actions/runs/40321641885",
-  "commit": "b24dcf15810df2f97bb66d612f1ebefa01796c14",
-  "finished_utc": "2026-10-26T12:22:00.448971+00:00"
+  "status": "running",
+  "run_id": "40322363113",
+  "run_url": "https://github.com/newgitjfo/barreplay-yearly-tick-merger/actions/runs/40322363113",
+  "commit": "9a43430869e0c3a9477d000f184cba0956c42123",
+  "finished_utc": "2026-10-26T12:25:06.249722+00:00"
 }

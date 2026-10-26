@@ -106,7 +106,7 @@ def read_exact(stream,n):
     return raw
 
 
-def inspect_bin(path, expected_day=None):
+def inspect_bin(path, expected_day=None, require_hourly=True):
     """Return hourly block descriptors, validating every timestamp and Bid/Ask.
     Array order is count:int32; all time:int64; all bid:float64; all ask:float64.
     Equal millisecond timestamps are deliberately preserved.
@@ -132,13 +132,66 @@ def inspect_bin(path, expected_day=None):
                         elif not math.isfinite(value): raise MergeError('Non-finite BIN Bid/Ask.')
                     remaining-=take
             hour=first//HOUR_MS
-            if hour!=last//HOUR_MS: raise MergeError('A source block crosses UTC hours; refusing unsafe compaction.')
+            if require_hourly and hour!=last//HOUR_MS: raise MergeError('A source block crosses UTC hours; hourly normalization is required.')
             if expected_day and (utc(first)[:10]!=expected_day or utc(last)[:10]!=expected_day):
                 raise MergeError('Tick day does not match daily filename: '+expected_day)
             result.append({'offset':offset,'length':length,'ticks':n,'hour':hour,
                            'first_ms':first,'last_ms':last,'sha256':h.hexdigest()})
     if not result: raise MergeError('Empty BIN input.')
     return result
+
+
+def normalize_day(source, destination, expected_day):
+    """Resegment any ordered bin_v1 source into one block per UTC hour.
+    Copy byte slices, not reconstructed prices. Keep all equal-time ticks.
+    """
+    descriptors=inspect_bin(source,expected_day,require_hourly=False)
+    segments=[]; previous=None; skipped=0; expected_ticks=0
+    with open(source,'rb') as src:
+        for desc in descriptors:
+            if previous and (desc['sha256'],desc['first_ms'],desc['last_ms']) == (previous['sha256'],previous['first_ms'],previous['last_ms']):
+                skipped+=1
+                continue
+            if previous and desc['first_ms']<previous['last_ms']:
+                raise MergeError('Overlapping/reversed source blocks: cannot normalize without reordering or discarding ticks.')
+            n=desc['ticks']; base=desc['offset']+4
+            start=0; index=0; active=None
+            src.seek(base)
+            remaining=n
+            while remaining:
+                take=min(remaining,32768)
+                raw=read_exact(src,take*8)
+                for (stamp,) in struct.iter_unpack('<q',raw):
+                    hour=stamp//HOUR_MS
+                    if active is None: active=hour
+                    if hour!=active:
+                        segments.append((active,base,n,start,index-start))
+                        start=index; active=hour
+                    index+=1
+                remaining-=take
+            segments.append((active,base,n,start,n-start))
+            previous=desc; expected_ticks+=n
+        with open(destination,'xb') as out:
+            pos=0
+            while pos<len(segments):
+                stop=pos+1
+                while stop<len(segments) and segments[stop][0]==segments[pos][0]: stop+=1
+                group=segments[pos:stop]; total=sum(x[4] for x in group)
+                if not 1<=total<=MAX_COUNT: raise MergeError('Normalized UTC-hour tick count exceeds reader limit.')
+                out.write(struct.pack('<i',total))
+                for channel in range(3):
+                    for hour,base,original_count,start,count in group:
+                        src.seek(base+channel*original_count*8+start*8)
+                        left=count*8
+                        while left:
+                            raw=read_exact(src,min(CHUNK,left)); out.write(raw); left-=len(raw)
+                pos=stop
+    normalized=inspect_bin(destination,expected_day)
+    if sum(x['ticks'] for x in normalized)!=expected_ticks:
+        raise MergeError('Hourly normalization changed the tick count.')
+    if any(b['hour']<=a['hour'] for a,b in zip(normalized,normalized[1:])):
+        raise MergeError('Normalized UTC hours are not strictly ordered.')
+    return normalized,skipped
 
 
 class Merger:
@@ -191,13 +244,15 @@ def build(symbol,year,output):
                 'source_folder':symbol,'inventory_bytes':size,'source_files':[],
                 'coverage_note':'Available canonical daily files only; absent days are not automatically errors or proven market closures.'}
         with tempfile.TemporaryDirectory(prefix='daily_bin_') as temp, binpath.open('xb') as out:
-            daily=Path(temp)/'day.BIN'; merger=Merger(out)
+            daily=Path(temp)/'day.BIN'; normalized=Path(temp)/'normalized.BIN'; merger=Merger(out)
             for i,item in enumerate(files,1):
                 url='https://huggingface.co/datasets/'+DATASET+'/resolve/'+revision+'/'+quote(item['path'],safe='/')
                 digest=download(url,daily,item['bytes'],item['source_sha256'])
-                blocks=inspect_bin(daily,item['day']); added=merger.append(daily,blocks)
-                report['source_files'].append({**item,'sha256':digest,'source_blocks':len(blocks),'added_blocks':added})
-                daily.unlink()
+                blocks,skipped=normalize_day(daily,normalized,item['day']); merger.duplicates+=skipped
+                added=merger.append(normalized,blocks)
+                report['source_files'].append({**item,'sha256':digest,'normalized_blocks':len(blocks),
+                                              'identical_source_blocks_skipped':skipped,'added_blocks':added})
+                daily.unlink(); normalized.unlink()
                 print(f"[{i}/{len(files)}] {item['day']} checked and merged ({sum(b['ticks'] for b in blocks):,} ticks)",flush=True)
             out.flush(); os.fsync(out.fileno())
         # Independently validate the entire finished BIN before releasing anything.

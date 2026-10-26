@@ -67,6 +67,25 @@ class Tests(unittest.TestCase):
         with patch.object(m,'discover',return_value=('a'*40,files)),patch.object(m,'download',side_effect=m.MergeError('network')):
             with self.assertRaises(m.MergeError): m.build('EURUSD',2026,self.root/'output')
         self.assertFalse((self.root/'output').exists()); self.assertFalse(list(self.root.glob('.yearly_*')))
+    def test_normalize_whole_day_to_hourly(self):
+        times=[T,T,T+3599999,T+3600000,T+86399999]
+        bids=[1.1234567890123457,-0.0,-37.63,2.5,3.5]; asks=[x+0.01 for x in bids]
+        src=self.file(block(times,bids,asks)); dst=self.root/'normalized.BIN'
+        desc,skipped=m.normalize_day(src,dst,'2026-01-01')
+        expected=block(times[:3],bids[:3],asks[:3])+block(times[3:4],bids[3:4],asks[3:4])+block(times[4:],bids[4:],asks[4:])
+        self.assertEqual(dst.read_bytes(),expected);self.assertEqual(len(desc),3);self.assertEqual(skipped,0)
+    def test_normalize_split_hour_joins_without_dedup_ticks(self):
+        src=self.file(block([T,T+1],[1.,2.],[1.1,2.1])+block([T+1,T+2],[3.,4.],[3.1,4.1]))
+        dst=self.root/'normalized.BIN'; desc,_=m.normalize_day(src,dst,'2026-01-01')
+        self.assertEqual(dst.read_bytes(),block([T,T+1,T+1,T+2],[1.,2.,3.,4.],[1.1,2.1,3.1,4.1]))
+        self.assertEqual(len(desc),1)
+    def test_normalize_identical_whole_blocks_only(self):
+        raw=block([T,T+1]); src=self.file(raw+raw); dst=self.root/'normalized.BIN'
+        desc,skipped=m.normalize_day(src,dst,'2026-01-01')
+        self.assertEqual(dst.read_bytes(),raw);self.assertEqual(skipped,1)
+    def test_normalize_conflicting_overlap_rejected(self):
+        src=self.file(block([T,T+2])+block([T+1,T+3])); dst=self.root/'normalized.BIN'
+        with self.assertRaises(m.MergeError):m.normalize_day(src,dst,'2026-01-01')
     def test_no_overwrite(self):
         out=self.root/'output'; out.mkdir()
         with self.assertRaises(m.MergeError): m.build('EURUSD',2026,out)

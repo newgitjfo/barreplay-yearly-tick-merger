@@ -16,11 +16,15 @@ test_identical_block_skipped_only_as_whole (test_merge_year.Tests.test_identical
 test_merge_hour_and_day (test_merge_year.Tests.test_merge_hour_and_day) ... ok
 test_no_overwrite (test_merge_year.Tests.test_no_overwrite) ... ok
 test_nonfinite_price (test_merge_year.Tests.test_nonfinite_price) ... ok
+test_normalize_conflicting_overlap_rejected (test_merge_year.Tests.test_normalize_conflicting_overlap_rejected) ... ok
+test_normalize_identical_whole_blocks_only (test_merge_year.Tests.test_normalize_identical_whole_blocks_only) ... ok
+test_normalize_split_hour_joins_without_dedup_ticks (test_merge_year.Tests.test_normalize_split_hour_joins_without_dedup_ticks) ... ok
+test_normalize_whole_day_to_hourly (test_merge_year.Tests.test_normalize_whole_day_to_hourly) ... ok
 test_reversed_hours_fail (test_merge_year.Tests.test_reversed_hours_fail) ... ok
 test_unsorted_ticks (test_merge_year.Tests.test_unsorted_ticks) ... ok
 test_wrong_daily_name (test_merge_year.Tests.test_wrong_daily_name) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 0.010s
+Ran 18 tests in 0.012s
 
 OK

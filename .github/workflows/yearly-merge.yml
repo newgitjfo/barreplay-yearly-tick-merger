@@ -1,6 +1,7 @@
 name: Merge yearly tick data and publish Release
 run-name: Merge ${{ inputs.symbol || 'EURUSD' }} ${{ inputs.year || '2026' }} daily BIN files
 on:
+  # Supports hourly and whole-day source blocks; normalizes before merging.
   # Initial project upload starts EURUSD 2026 automatically.
   # Later edits to this workflow also start the default EURUSD 2026 run.
   push:

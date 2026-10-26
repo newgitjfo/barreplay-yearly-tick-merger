@@ -10,6 +10,11 @@ repo=os.environ['GITHUB_REPOSITORY']; run=os.environ['GITHUB_RUN_ID']
 receipt={'status':os.environ.get('JOB_STATUS','unknown'),'run_id':run,
          'run_url':f'https://github.com/{repo}/actions/runs/{run}',
          'commit':os.environ['GITHUB_SHA'],'finished_utc':datetime.now(timezone.utc).isoformat()}
+for logname in ('test.log','merge.log','publish.log'):
+    log=Path(logname)
+    if log.exists():
+        # These project logs contain only test results/public source progress, not environment variables.
+        receipt[logname.replace('.','_')+'_tail']='\n'.join(log.read_text(errors='replace').splitlines()[-20:])[-10000:]
 report=Path('output/merge_report.json')
 if report.exists():
     data=json.loads(report.read_text())

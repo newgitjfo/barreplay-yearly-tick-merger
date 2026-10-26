@@ -1,23 +1,7 @@
 {
-  "status": "success",
-  "run_id": "40346038372",
-  "run_url": "https://github.com/newgitjfo/barreplay-yearly-tick-merger/actions/runs/40346038372",
-  "commit": "dc33ecb4cd5e71f8cc491b968e24176e768363cd",
-  "finished_utc": "2026-10-26T15:26:17.646988+00:00",
-  "test_log_tail": "[2/2] 2026-01-02 checked and merged (1 ticks)\nSUCCESS: EURUSD_2026.zip | 3 ticks | 166 ZIP bytes\nok\ntest_exact_format_same_timestamp (test_merge_year.Tests.test_exact_format_same_timestamp) ... ok\ntest_identical_block_skipped_only_as_whole (test_merge_year.Tests.test_identical_block_skipped_only_as_whole) ... ok\ntest_merge_hour_and_day (test_merge_year.Tests.test_merge_hour_and_day) ... ok\ntest_no_overwrite (test_merge_year.Tests.test_no_overwrite) ... ok\ntest_nonfinite_price (test_merge_year.Tests.test_nonfinite_price) ... ok\ntest_normalize_conflicting_overlap_rejected (test_merge_year.Tests.test_normalize_conflicting_overlap_rejected) ... ok\ntest_normalize_identical_whole_blocks_only (test_merge_year.Tests.test_normalize_identical_whole_blocks_only) ... ok\ntest_normalize_split_hour_joins_without_dedup_ticks (test_merge_year.Tests.test_normalize_split_hour_joins_without_dedup_ticks) ... ok\ntest_normalize_whole_day_to_hourly (test_merge_year.Tests.test_normalize_whole_day_to_hourly) ... ok\ntest_reversed_hours_fail (test_merge_year.Tests.test_reversed_hours_fail) ... ok\ntest_unsorted_ticks (test_merge_year.Tests.test_unsorted_ticks) ... ok\ntest_wrong_daily_name (test_merge_year.Tests.test_wrong_daily_name) ... ok\n\n----------------------------------------------------------------------\nRan 18 tests in 0.291s\n\nOK",
-  "merge_log_tail": "[237/255] 2026-10-04 checked and merged (8,329 ticks)\n[238/255] 2026-10-05 checked and merged (138,421 ticks)\n[239/255] 2026-10-06 checked and merged (108,299 ticks)\n[240/255] 2026-10-07 checked and merged (96,302 ticks)\n[241/255] 2026-10-08 checked and merged (125,249 ticks)\n[242/255] 2026-10-09 checked and merged (77,046 ticks)\n[243/255] 2026-10-11 checked and merged (5,394 ticks)\n[244/255] 2026-10-12 checked and merged (40,510 ticks)\n[245/255] 2026-10-13 checked and merged (89,976 ticks)\n[246/255] 2026-10-14 checked and merged (100,568 ticks)\n[247/255] 2026-10-15 checked and merged (137,014 ticks)\n[248/255] 2026-10-16 checked and merged (100,153 ticks)\n[249/255] 2026-10-18 checked and merged (9,053 ticks)\n[250/255] 2026-10-19 checked and merged (78,173 ticks)\n[251/255] 2026-10-20 checked and merged (97,740 ticks)\n[252/255] 2026-10-21 checked and merged (78,292 ticks)\n[253/255] 2026-10-22 checked and merged (152,590 ticks)\n[254/255] 2026-10-23 checked and merged (142,541 ticks)\n[255/255] 2026-10-25 checked and merged (7,208 ticks)\nSUCCESS: USDJPY_2026.zip | 21,355,267 ticks | 98,186,868 ZIP bytes",
-  "publish_log_tail": "Published verified ZIP: https://github.com/newgitjfo/barreplay-yearly-tick-merger/releases/tag/yearly-USDJPY-2026",
-  "symbol": "USDJPY",
-  "year": 2026,
-  "daily_files": 255,
-  "ticks": 21355267,
-  "hourly_blocks": 5067,
-  "first_tick_utc": "2026-01-01T22:04:01.134Z",
-  "last_tick_utc": "2026-10-25T23:59:59.678Z",
-  "bin_bytes": 512546676,
-  "zip_bytes": 98186868,
-  "bin_sha256": "11974a2e542b982d66fc4de4c6e78e7dff9faca0e0dd3bf642125205cb8ab063",
-  "zip_sha256": "4a232873278c424a8277b1fb6efb825da79be8fc101c53d2e1b4b75c788ffc23",
-  "source_revision": "a76a1ce8413f5f6777f5b37f51720b88f86e7627",
-  "zip_file": "USDJPY_2026.zip"
+  "status": "running",
+  "run_id": "40349021996",
+  "run_url": "https://github.com/newgitjfo/barreplay-yearly-tick-merger/actions/runs/40349021996",
+  "commit": "7e7d815a9a5a8c165fdb788e44db0f20af1cebc0",
+  "finished_utc": "2026-10-26T15:26:26.894133+00:00"
 }
